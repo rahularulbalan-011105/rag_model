@@ -1,0 +1,12 @@
+torch
+transformers
+accelerate
+sentence-transformers
+faiss-cpu
+langchain
+langchain-community
+pymupdf
+huggingface-hub
+bitsandbytes
+datasets
+watchdog
