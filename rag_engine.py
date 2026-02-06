@@ -5,7 +5,8 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 
 DB_DIR = "faiss_db"
-MODEL_DIR = "models/mistral"
+MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2"
+
 
 @st.cache_resource
 def get_embeddings():
@@ -23,13 +24,15 @@ def get_db():
 
 @st.cache_resource
 def get_llm():
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
+
     model = AutoModelForCausalLM.from_pretrained(
-        MODEL_DIR,
+        MODEL_ID,
         device_map="auto",
         load_in_4bit=True,
         torch_dtype=torch.float16
     )
+
     return pipeline(
         "text-generation",
         model=model,
@@ -37,6 +40,7 @@ def get_llm():
         max_new_tokens=512,
         temperature=0.2
     )
+
 
 def answer_question(question: str) -> str:
     db = get_db()
