@@ -12,3 +12,4 @@ datasets
 watchdog
 uvicorn
 python-multipart
+fastapi
