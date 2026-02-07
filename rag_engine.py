@@ -3,10 +3,6 @@ import streamlit as st
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-import os
-
-
-HF_TOKEN = os.getenv("HUGGINGFACE_HUB_TOKEN")
 
 DB_DIR = "faiss_db"
 MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -25,16 +21,13 @@ def get_db():
         get_embeddings(),
         allow_dangerous_deserialization=True
     )
+
 @st.cache_resource
 def get_llm():
-    tokenizer = AutoTokenizer.from_pretrained(
-        MODEL_ID,
-        token=HF_TOKEN
-    )
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
 
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_ID,
-        token=HF_TOKEN,
         device_map="auto",
         load_in_4bit=True,
         torch_dtype=torch.float16
